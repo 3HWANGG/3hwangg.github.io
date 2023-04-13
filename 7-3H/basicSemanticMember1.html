@@ -1,4 +1,4 @@
-<!doctype html> <!--basicSemantic4.html-->
+<!doctype html> <!--basicSemanticMember1.html-->
 <html>
 <head><meta charset="utf-8"/>
 <meta name ="viewport" content="width=device-width, initial-scale=1"/>
@@ -49,17 +49,16 @@ a:active{
      <section> <!--main-->
        <section id="memberArea">
          <form id="memberForm" action="http://localhost:8080/regCheck.jsp" method="post">
-           <fieldset><legend>회원정보</legebd>
-             <fieldset><legend>이름</legebd>
+           <fieldset><legend>회원정보</legend>
+             <fieldset><legend>이름/이메일</legend>
                <label for="stud_name">이름</label>
                <input id ="stud_name" type="text" name="stud_name" size="20" maxlength="50" required/><br/>
                   <label for="stud_email">이름</label>
-               <input id ="stud_email" type="text" name="stud_email" size="20" maxlength="50" required/><br/>
+               <input id ="stud_email" type="text" name="stud_email" size="20" maxlength="50"/><br/>
                   <label for="stud_phone">이름</label>
-               <input id ="stud_phone" type="text" name="stud_phone" size="20" maxlength="50" required/><br/>
+               <input id ="stud_phone" type="text" name="stud_phone" size="20" maxlength="50"/><br/>
                </fieldset>
-                    <fieldset><legend>회원정보</legebd>
-             <fieldset><legend>아이디/비밀번호</legebd>
+		   <fieldset><legend>아이디/비밀번호</legend>
                <label for="stud_id">아이디</label>
                <input id ="stud_id" type="text" name="stud_id" size="20" maxlength="50" required/><br/>
                   <label for="stud_passwd">비밀번호</label>
@@ -79,7 +78,7 @@ a:active{
     취미
     </legend>
     <label for="stud_hobby1">낚시</label>
-    <input id="stud_hobby1" type="checkbox" name="stud_hobby" value="낚시"checked/>
+    <input id="stud_hobby1" type="checkbox" name="stud_hobby" value="낚시"/>
      <label for="sstud_hobby2">바둑</label>
     <input id="stud_hobby2" type="checkbox" name="stud_hobby" value="바둑"/>
          <label for="stud_hobby3">독서</label>
