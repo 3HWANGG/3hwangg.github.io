@@ -1,0 +1,36 @@
+<!DOCTYPE html> <!-- ePortfolio.html-->
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="ePortfolio.css"/>
+        <title>황은진의 ePortfolio</title> 
+    </head>
+    <body><header class="header"><h2>황은진의 ePortfolio</h2></header>
+        <div class="row"></div>
+        <div id="main">
+            <nav class="col-3 col-t-3 menu"> <!-- 메뉴 D:25% T:25% M:100% -->
+                <ul><li onclick="window.location.href='MY.html'">자기소개</li>
+                    <li onclick="window.location.href='subjectTable.html'">강의 수강 내역</li>
+                    <li onclick="window.location.href='subjectproject.html'">과목별 프로젝트 설명</li>
+                    <li onclick="window.location.href='activities.html'">교내활동</li>
+                    <li onclick="window.location.href='Goals.html'">졸업 전 목표</li></ul>
+            </nav>
+            <section class="col-6 col-t-9"> <!-- section D:50% T:75% M:100% -->
+                <picture>
+                    <source media="(min-width:768px)" srcset="sajin1_big.png">
+                    <source media="(min-width:600px)" srcset="sajin1_nomal.png">
+                    <img src="sajin1_small.png" alt="lobster" style="width: auto;">
+                </picture>
+            </section>
+            <aside class="col-3 col-t-12 banner"> <!-- aside D:25% T:100% M:100% -->
+                <ul>
+                    <li><img src="github_icon.png"><a href="https://github.com/3hwangg">깃허브</a></li>
+                    <li><img src="dju_image.png"><a href="https://www.dju.ac.kr/"> 대전대학교</a></li>
+                </ul>
+            </aside>
+        </div>
+        <div class="row"></div>
+        <footer class="footer"><h4>Copyright 2023 Korea</h4></footer>
+    </body>
+</html>
