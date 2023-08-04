@@ -1,22 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>지도 </title>
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kl4u1rsz0n"></script>
+    <title>Naver Map with WMS Layer</title>
+    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kl4u1rsz0n&submodules=geocoder"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
 </head>
 <body>
-<div id="map" style="width:100%;height:400px;"></div>
+    <button onclick="addWmsLayer()">Add WMS Layer</button>
+    <div id="map" style="width: 100%; height: 500px;"></div>
 
-<script>
-var mapOptions = {
-    center: new naver.maps.LatLng(37.3595704, 127.105399),
-    zoom: 10
-};
+    <script type="text/javascript">
+        function addWmsLayer() {
+            var param = {
+                name: "하천범람위험도",
+                serverUrl: "http://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7",
+                layername: "A2SM_FLOODFOVRRISK2",
+                styles: '',
+                service: "WMS"
+            };
 
-var map = new naver.maps.Map('map', mapOptions);
-</script>
+            var map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(37.5665, 126.9780), // 좌표 설정
+                zoom: 12 // 줌 레벨 설정
+            });
+
+            var wmsLayer = new OpenLayers.Layer.WMS(
+                param.name,
+                param.serverUrl,
+                {
+                    layers: '' + param.layername,
+                    styles: param.styles,
+                    format: 'image/png',
+                    exceptions: 'text/xml',
+                    transparent: true
+                },
+                {
+                    isBaseLayer: false
+                }
+            );
+
+            map.addLayer(wmsLayer);
+        }
+    </script>
 </body>
 </html>
