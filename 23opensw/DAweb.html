@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Naver Map with WMS Layer</title>
-    <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kl4u1rsz0n&submodules=geocoder"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>범람지도</title>
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=kl4u1rsz0n"></script>
+    <script src="./wp-includes/js/jquery/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://www.safemap.go.kr/legend/legendApiXml.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7&A2SM_FLOODFOVRRISK2"></script>
 </head>
 <body>
-    <button onclick="addWmsLayer()">Add WMS Layer</button>
-    <div id="map" style="width: 100%; height: 500px;"></div>
+    <div id="map" style="width:100%;height: 700px;"></div>
+</body>
+<script>
+    var map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.5666805, 126.9784147),
+        zoom: 10,
+        mapTypeId: naver.maps.MapTypeId.NORMAL
+    });
+    
+    var infoWindow = new naver.maps.InfoWindow({
+        maxWidth: window.innerWidth * 0.8,
+        anchorSkew: true
+    });
 
-    <script type="text/javascript">
-        function addWmsLayer() {
-            var param = {
-                name: "하천범람위험도",
-                serverUrl: "http://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7",
-                layername: "A2SM_FLOODFOVRRISK2",
-                styles: '',
+    function addWmsLayer(){
+        param = {
+                name:'하천범람지도(지방하천)',
+                serverUrl:'www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
+                layername:'A2SM_FLOODFOVRRISK2',
+                styles:'',
                 service: "WMS"
             };
 
-            var map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(37.5665, 126.9780), // 좌표 설정
-                zoom: 12 // 줌 레벨 설정
-            });
-
-            var wmsLayer = new OpenLayers.Layer.WMS(
-                param.name,
-                param.serverUrl,
-                {
-                    layers: '' + param.layername,
-                    styles: param.styles,
-                    format: 'image/png',
-                    exceptions: 'text/xml',
-                    transparent: true
-                },
-                {
-                    isBaseLayer: false
-                }
-            );
-
-            map.addLayer(wmsLayer);
-        }
-    </script>
-</body>
-</html>
+    var wmsLayer = new OpenLayers.Layer.WMS (
+    param.name,
+    param.serverUrl,
+    {
+        layers: ''+param.layername,
+        styles:param.styles,
+        format: 'image/png',
+        exceptions:'text/xml',
+        transparent: true   },
+    {
+        isBaseLayer: false
+    }
+);
+  map.addwmsLayer(wmsLayer);
+}  
+</script>
