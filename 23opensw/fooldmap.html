@@ -82,10 +82,6 @@
 </div></div>
 
 <script>
-
-    var attribution = new ol.control.Attribution({
-        collapsible: false
-    });
    
     var param = {
         name: '하천범람지도(지방하천)',
@@ -172,7 +168,7 @@ var container = document.getElementById('popup');
          duration: 250
      }
  });
- map.addOverlay(overlay);
+
 
  closer.onclick = function() {
      overlay.setPosition(undefined);
@@ -192,6 +188,7 @@ var container = document.getElementById('popup');
     }
 
 });
+map.addOverlay(overlay);
 content.innerHTML = '<b>현재 위치입니다!</b>';
 overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
                     // 지도의 중심을 현재 위치로 이동합니다.
