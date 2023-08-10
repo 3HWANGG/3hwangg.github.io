@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>범람지도(지방하천)</title>
     <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.7.0/css/ol.css" type="text/css">
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.7.0/build/ol.js"></script>
@@ -153,7 +153,7 @@
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
     </div>
-       <script>
+          <script>
         var param = {
             name: '하천범람지도(지방하천)',
             serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
@@ -185,8 +185,7 @@
                 duration: 250
             }
         });
-        overlay.setPosition(undefined);
-        closer.blur();
+        map.addOverlay(overlay); // 오버레이를 맵에 추가
 
         var wmsLayer = new ol.layer.Image({
             source: new ol.source.ImageWMS({
@@ -242,7 +241,6 @@
                 overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
                 map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
                 map.getView().setZoom(15);
-                map.addOverlay(overlay);
             });
         } else {
             map.addLayer(wmsLayer);
