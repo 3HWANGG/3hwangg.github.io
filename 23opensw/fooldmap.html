@@ -153,112 +153,112 @@
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
     </div>
-<script>
+    <script>
     
-    var param = {
-        name: '하천범람지도(지방하천)',
-        serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
-        layername: 'A2SM_FLOODFOVRRISK2',
-        styles: ''
-    };
-
-    var wmsLayer = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            url: param.serverUrl,
-            params: {
-                'LAYERS': param.layername,
-                'FORMAT': 'image/png',
-                'TRANSPARENT': true
-            },
-            ratio: 1,
-            serverType: 'geoserver'
-        }),
-        visible: true
-    });
-
-    var map = new ol.Map({
-        target: 'map',
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.OSM()
-            }),
-            wmsLayer
-        ],
-        view: new ol.View({
-            center: ol.proj.fromLonLat([126.9784, 37.5665]),
-            zoom: 12
-        })
-    });
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
-
-    var overlay = new ol.Overlay({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
-    overlay.setPosition(undefined);
-    closer.blur();
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-
-            var layer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [
-                        new ol.Feature({
-                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
-                        })
-                    ]
+        var param = {
+            name: '하천범람지도(지방하천)',
+            serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
+            layername: 'A2SM_FLOODFOVRRISK2',
+            styles: ''
+        };
+    
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
                 })
-            });
-            map.addLayer(layer);
-
-            closer.onclick = function() {
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([126.9784, 37.5665]),
+                zoom: 12
+            })
+        });
+        var container = document.getElementById('popup');
+        var content = document.getElementById('popup-content');
+        var closer = document.getElementById('popup-closer');
+    
+        var overlay = new ol.Overlay({
+            element: container,
+            autoPan: true,
+            autoPanAnimation: {
+                duration: 250
+            }
+        });
+        overlay.setPosition(undefined);
+        closer.blur();
+    
+        var wmsLayer = new ol.layer.Image({
+            source: new ol.source.ImageWMS({
+                url: param.serverUrl,
+                params: {
+                    'LAYERS': param.layername,
+                    'FORMAT': 'image/png',
+                    'TRANSPARENT': true
+                },
+                ratio: 1,
+                serverType: 'geoserver'
+            }),
+            visible: true
+        });
+    
+        map.addLayer(wmsLayer);
+    
+        closer.onclick = function() {
+            overlay.setPosition(undefined);
+            closer.blur();
+            return false;
+        };
+    
+        map.on('singleclick', function (event) {
+            if (map.hasFeatureAtPixel(event.pixel) === true) {
+                var coordinate = event.coordinate;
+    
+                content.innerHTML = '<b>현재 위치입니다!</b>';
+                overlay.setPosition(coordinate);
+            } else {
                 overlay.setPosition(undefined);
                 closer.blur();
-                return false;
-            };
-
-            map.on('singleclick', function (event) {
-                if (map.hasFeatureAtPixel(event.pixel) === true) {
-                    var coordinate = event.coordinate;
-
-                    content.innerHTML = '<b>현재 위치입니다!</b>';
-                    overlay.setPosition(coordinate);
-                } else {
-                    overlay.setPosition(undefined);
-                    closer.blur();
-                }
-            }); 
-            content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setZoom(15);
-            map.addOverlay(overlay);
+            }
+        }); 
+    
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+    
+                var layer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: [
+                            new ol.Feature({
+                                geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
+                            })
+                        ]
+                    })
+                });
+                map.addLayer(layer);
+    
+                content.innerHTML = '<b>현재 위치입니다!</b>';
+                overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
+                map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+                map.getView().setZoom(15);
+                map.addOverlay(overlay);
+            });
+        } else {
+            map.addLayer(wmsLayer);
+        }
+     
+        var hamburger = document.getElementById('hamburger');
+        var closeBtn = document.getElementById('closeBtn');
+        var sidebar = document.getElementById('sidebar');
+    
+        hamburger.addEventListener('click', function() {
+            sidebar.classList.add('active');
         });
-    } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-        
-
-    }
- 
-    var hamburger = document.getElementById('hamburger');
-    var closeBtn = document.getElementById('closeBtn');
-    var sidebar = document.getElementById('sidebar');
-
-    hamburger.addEventListener('click', function() {
-        sidebar.classList.add('active');
-    });
-
-    closeBtn.addEventListener('click', function() {
-        sidebar.classList.remove('active');
-    });
-</script>
-</body>
-</html>
+    
+        closeBtn.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+        });
+    </script>
+    </body>
+    </html>
