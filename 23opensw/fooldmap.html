@@ -123,25 +123,6 @@
         })
     });
 
-    var url = 'http://www.safemap.go.kr/legend/legendApiXml.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7&layer=A2SM_FLOODFOVRRISK2&style=';
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var response = xhr.responseText;
-            var legend = JSON.parse(response);
-
-            var legendControl = new ol.control.Legend({
-                layers: [wmsLayer],
-                legend: legend
-            });
-            map.addControl(legendControl);
-        } else {
-            console.log('Error: ' + xhr.status);
-        }
-    };
-    xhr.send();
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -157,6 +138,7 @@
                     ]
                 })
             });
+            map.addLayer(layer);
 
             var container = document.getElementById('popup');
             var content = document.getElementById('popup-content');
@@ -169,6 +151,7 @@
                     duration: 250
                 }
             });
+            map.addOverlay(overlay);
 
             closer.onclick = function() {
                 overlay.setPosition(undefined);
@@ -188,8 +171,8 @@
                 }
             });
 
-            map.addLayer(layer);
-            map.addOverlay(overlay);
+            
+            
             content.innerHTML = '<b>현재 위치입니다!</b>';
             overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
             map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
