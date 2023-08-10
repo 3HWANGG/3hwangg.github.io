@@ -44,18 +44,31 @@ var map = new ol.Map({
     })
 });
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
+async function getLocationAndCenterMap() {
+    if (navigator.geolocation) {
+        try {
+            const position = await new Promise(function(resolve, reject) {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
 
-        // 지도의 중심을 현재 위치로 이동합니다.
-        map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
-        map.getView().setZoom(16);
-    });
-} else {
-    alert('GeoLocation을 지원하지 않는 브라우저입니다.');
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            // 지도의 중심을 현재 위치로 이동합니다.
+            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+            map.getView().setZoom(16);
+
+            // 추가 작업을 여기에 수행할 수 있습니다.
+            // ...
+        } catch (error) {
+            console.error('Error getting location:', error);
+        }
+    } else {
+        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
+    }
 }
+
+getLocationAndCenterMap();
 </script>
 </body>
 </html>
