@@ -154,29 +154,29 @@ if (navigator.geolocation) {
                 ]
             })
         });
-        map.addLayer(layer);
+
 
 
 var container = document.getElementById('popup');
- var content = document.getElementById('popup-content');
- var closer = document.getElementById('popup-closer');
+var content = document.getElementById('popup-content');
+var closer = document.getElementById('popup-closer');
 
- var overlay = new ol.Overlay({
+var overlay = new ol.Overlay({
      element: container,
      autoPan: true,
      autoPanAnimation: {
          duration: 250
      }
- });
+});
 
 
- closer.onclick = function() {
+closer.onclick = function() {
      overlay.setPosition(undefined);
      closer.blur();
      return false;
- };
+};
 
- map.on('singleclick', function (event) {
+map.on('singleclick', function (event) {
     if (map.hasFeatureAtPixel(event.pixel) === true) {
         var coordinate = event.coordinate;
 
@@ -188,6 +188,7 @@ var container = document.getElementById('popup');
     }
 
 });
+map.addLayer(layer);
 map.addOverlay(overlay);
 content.innerHTML = '<b>현재 위치입니다!</b>';
 overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
