@@ -58,7 +58,7 @@ var overlay = new ol.Overlay({
 overlay.setPosition(undefined);
 closer.blur();
 
-// 지오로케이션 권한 체크와 현재 위치 설정
+// 위치 권한 요청 및 처리
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
         var lat = position.coords.latitude;
@@ -82,31 +82,13 @@ if (navigator.geolocation) {
         content.innerHTML = '<b>현재 위치입니다!</b>';
         overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
         map.addOverlay(overlay);
-    }, function(error) {
-        // 위치 권한을 받지 못한 경우에도 레이어 추가
-        map.getView().setZoom(12);  // 기본 줌 레벨로 설정
-        var defaultPosition = ol.proj.fromLonLat([126.9784, 37.5665]);
-        var layer = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                features: [
-                    new ol.Feature({
-                        geometry: new ol.geom.Point(defaultPosition)
-                    })
-                ]
-            })
-        });
-        map.addLayer(layer);
-
-        content.innerHTML = '<b>위치 정보를 사용할 수 없습니다.</b>';
-        overlay.setPosition(defaultPosition);
-        map.addOverlay(overlay);
-
-        alert('GeoLocation을 지원하지 않거나 권한을 허용하지 않았습니다.');
     });
 } else {
-    // 위치 기능을 지원하지 않는 경우에도 레이어 추가
-    map.getView().setZoom(12);  // 기본 줌 레벨로 설정
+    // 위치 기능을 지원하지 않는 경우 기본 위치로 설정
     var defaultPosition = ol.proj.fromLonLat([126.9784, 37.5665]);
+    map.getView().setCenter(defaultPosition);
+    map.getView().setZoom(12);
+
     var layer = new ol.layer.Vector({
         source: new ol.source.Vector({
             features: [
@@ -118,13 +100,10 @@ if (navigator.geolocation) {
     });
     map.addLayer(layer);
 
-    content.innerHTML = '<b>GeoLocation을 지원하지 않습니다.</b>';
+    content.innerHTML = '<b>현재 위치를 찾을 수 없습니다.</b>';
     overlay.setPosition(defaultPosition);
     map.addOverlay(overlay);
-
-    alert('GeoLocation을 지원하지 않는 브라우저입니다.');
 }
-
 </script>
 </body>
 </html>
