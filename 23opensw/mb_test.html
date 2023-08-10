@@ -42,6 +42,21 @@
             zoom: 12
         })
     });
+    
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+
+
+            // 지도의 중심을 현재 위치로 이동합니다.
+           map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+           map.getView().setZoom(16);
+        });
+    } else {
+        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
+    }
 </script>
 </body>
 </html>
