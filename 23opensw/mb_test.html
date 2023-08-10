@@ -64,11 +64,10 @@ if (navigator.geolocation) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
 
-        // 지도의 중심을 현재 위치로 이동합니다.
+        // 지도의 중심을 현재 위치로 이동하고 레이어 추가
         map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
         map.getView().setZoom(16);
 
-        // 현재 위치 레이어 추가
         var layer = new ol.layer.Vector({
             source: new ol.source.Vector({
                 features: [
@@ -79,13 +78,50 @@ if (navigator.geolocation) {
             })
         });
         map.addLayer(layer);
-        
+
         content.innerHTML = '<b>현재 위치입니다!</b>';
         overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
-        map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
         map.addOverlay(overlay);
+    }, function(error) {
+        // 위치 권한을 받지 못한 경우에도 레이어 추가
+        map.getView().setZoom(12);  // 기본 줌 레벨로 설정
+        var defaultPosition = ol.proj.fromLonLat([126.9784, 37.5665]);
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    new ol.Feature({
+                        geometry: new ol.geom.Point(defaultPosition)
+                    })
+                ]
+            })
+        });
+        map.addLayer(layer);
+
+        content.innerHTML = '<b>위치 정보를 사용할 수 없습니다.</b>';
+        overlay.setPosition(defaultPosition);
+        map.addOverlay(overlay);
+
+        alert('GeoLocation을 지원하지 않거나 권한을 허용하지 않았습니다.');
     });
 } else {
+    // 위치 기능을 지원하지 않는 경우에도 레이어 추가
+    map.getView().setZoom(12);  // 기본 줌 레벨로 설정
+    var defaultPosition = ol.proj.fromLonLat([126.9784, 37.5665]);
+    var layer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            features: [
+                new ol.Feature({
+                    geometry: new ol.geom.Point(defaultPosition)
+                })
+            ]
+        })
+    });
+    map.addLayer(layer);
+
+    content.innerHTML = '<b>GeoLocation을 지원하지 않습니다.</b>';
+    overlay.setPosition(defaultPosition);
+    map.addOverlay(overlay);
+
     alert('GeoLocation을 지원하지 않는 브라우저입니다.');
 }
 
