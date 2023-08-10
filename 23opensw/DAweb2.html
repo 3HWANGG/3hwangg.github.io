@@ -1,251 +1,212 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DisasterAlert+</title>
-    <style>
-        
-        body {  
-            background-color: #fdfaea;
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0; /* 웹 페이지 전체 크기를 모바일 화면에 맞게 변경 */
-        }
-
-        h1 {
-            color: #4CAF50;
-            
-        }
-
-        p {
-            color: #333;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px; /* 전체 컨텐츠의 패딩을 추가 */
-        }
-
-        .header {
-            background-color: #fdfaea;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .navigation {
-            display: flex;
-            justify-content: center;
-            background-color: #4CAF50;
-            padding: 10px;
-        }
-
-        .navigation a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 10px;
-            background-color: #fdfaea;
-        }
-
-        #map {
-            width: 100%;
-            height: 300px; /* 지도의 높이를 300px로 지정 */
-        }
-        @media (max-width: 768px) {
-            /* 768px 이하의 화면 크기에 대한 스타일 지정 */
-            .container {
-                padding: 10px; /* 작은 화면에서 패딩을 줄여 화면을 꽉 차게 표시 */
-            }
-        }
-
-        /* 랜덤 배너 */
-        * {
-            box-sizing: border-box;
-        }
-
-        .mySlides {
-            display: none;
-        }
-
-        img {
-            vertical-align: middle;
-        }
-
-        /* Slideshow container */
-        .slideshow-container {
-            max-width: 600px;
-            position: relative;
-            margin: auto;
-        }
-
-        /* Number text (1/3 etc) */
-        .numbertext {
-            color: #f2f2f2;
-            font-size: 10px;
-            padding: 6px 10px;
-            position: absolute;
-            top: 0;
-        }
-
-        /* Fading animation */
-        .fade {
-            -webkit-animation-name: fade;
-            -webkit-animation-duration: 1.5s;
-            animation-name: fade;
-            animation-duration: 1.5s;
-        }
-
-
-    /* The dots/bullets/indicators */
-    .dot {
-      height: 10px;
-      width: 10px;
-      margin: 0 2px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      transition: background-color 0.6s ease;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>범람지도지도(지방하천)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+<style>
+    .ol-attribution.ol-logo-only,
+    .ol-attribution.ol-uncollapsible {
+        max-width: calc(100% - 3em) !important;
+        height: 1.5em !important;
     }
 
-    .active {
-      background-color: #717171;
+    .ol-control button,
+    .ol-attribution,
+    .ol-scale-line-inner {
+        font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
     }
 
-        @-webkit-keyframes fade {
-            from {
-              opacity: .4
-            }
-      
-            to {
-              opacity: 1
-            }
-        }
-      
-        @keyframes fade {
-            from {
-              opacity: .4
-            }
-      
-            to {
-              opacity: 1
-            }
-        }
-      
-        /* On smaller screens, decrease text size */
-        @media only screen and (max-width: 300px) {
-            .text {
-              font-size: 10px
-            }
-        }
+    .ol-popup {
+        font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
+        font-size: 12px;
+        position: absolute;
+        background-color: white;
+        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -48px;
+        min-width: 100px;
+    }
 
-        
-    </style>
+    .ol-popup:after,
+    .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+    .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+    }
+
+    .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+    }
+
+    .ol-popup-closer {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+    }
+
+    .ol-popup-closer:after {
+        content: "✖";
+        color: #c3c3c3;
+    }
+
+</style>
 </head>
-<body topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
-    <div class="container">
-        <div class="header">
-            <h1>DisasterAlert+</h1>
-        </div>
-        <div class="navigation">
-            <a href="file:///C:/Users/AIONE/Desktop/%EB%AF%B8%EB%9E%98%EC%A7%80%EA%B8%B0.html">홈</a>
-            <a href="https://ysw1mst.github.io/Smartcity/">지진</a>
-            <a href="#">태풍</a>
-             <a href="floodweb.html">홍수</a>
-            <a href="#">재난현황</a>
-            <a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/ppn/emg/SDIJKM5602.html?menuSeq=596">비상연락망</a>
+<body>
 
-         
-        </div>
-        <section>
-            <section>
-                <h3 id="chapter1">현재 재난상황</h3>
-                <p>서울에서 !@!#@!# 발생</p>
-                <p>대전에서 !@!#@!# 발생</p>
-                <p>대구에서 !@!#@!# 발생</p>
-                <p>부산에서 !@!#@!# 발생</p>
-            </section>
-           
-   <aside style="display: flex;">
-            <div style="flex: 1;">
-                <h3 id="chapter1">대한민국 지도</h3>
-                <div class="map-section">
-                    <a href="https://floodmap.go.kr/fldara/fldaraList.do"target="_blank">
-                     <img src="./korea.jpg" alt="대한민국" style="width:100%"/>
-                    </a>
-                </div>
-            </div>
+<div id="map" style="width: 100%; height: 730px;">
+    <div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+</div></div>
 
-<!-- 랜덤 배너 -->
-            <div style="flex: 1;">
-                <div class="slideshow-container">
-                    <div class="mySlides fade">
-                        <div class="numbertext">1 / 4</div>
-                        <img src="./사진1.png" alt="사진 1" style="width:100%"/>
-                    </div>
-                    <div class="mySlides fade">
-                        <div class="numbertext">2 / 4</div>
-                        <img src="./사진2.png" alt="사진 2" style="width:100%"/>
-                    </div>
-                    <div class="mySlides fade">
-                        <div class="numbertext">3 / 4</div>
-                        <img src="./사진3.png" alt="사진 3" style="width:100%"/>
-                    </div>
-                    <div class="mySlides fade">
-                        <div class="numbertext">4 / 4</div>
-                        <img src="./사진4.png" alt="사진 4" style="width:100%"/>
-                    </div>
-                </div>
-                  <div style="text-align:center">
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                  </div>
-            </div>
-        </aside>
-        </section>
- 
-        <div class="content">
-            <h2>환영합니다!</h2>
-            <p>이곳은 간단한 홈페이지의 예시입니다. 원하는 내용으로 커스터마이즈하여 사용하시면 됩니다.</p>
-            <p>추가적인 내용이 필요하다면 이곳에 작성해주세요.</p>
-        </div>
-        <div class="footer">
-            <p>&copy; 2023. MIRAEJIGI. All rights reserved.</p>
-        </div>
-    </div>
+<script>
 
-  <script>
-        /* 랜덤 배너 */
-        var slideIndex = 0;
-        showSlides();
+    var attribution = new ol.control.Attribution({
+        collapsible: false
+    });
+   
+    var param = {
+        name: '하천범람지도(지방하천)',
+        serverUrl: 'http://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
+        layername: 'A2SM_FLOODFOVRRISK2',
+        styles: ''
+    };
 
-        function showSlides() {
-            var i;
-            var slides = document.getElementsByClassName("mySlides");
-            var dots = document.getElementsByClassName("dot");
-            for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-            }
-            slideIndex++;
-            if (slideIndex > slides.length) { slideIndex = 1 }
-            for (i = 0; i < dots.length; i++) {
-                   dots[i].className = dots[i].className.replace(" active", "");
-                 }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-            setTimeout(showSlides, 2000); // Change image every 2 seconds
-        }
-    </script>
+    var wmsLayer = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            url: param.serverUrl,
+            params: {
+                'LAYERS': param.layername,
+                'FORMAT': 'image/png',
+                'TRANSPARENT': true
+            },
+            ratio: 1,
+            serverType: 'geoserver'
+        }),
+        visible: true
+    });
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            }),
+            wmsLayer
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([126.9784, 37.5665]),
+            zoom: 12
+        })
+    });
+///////
+var url = 'http://www.safemap.go.kr/legend/legendApiXml.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7&layer=A2SM_FLOODFOVRRISK2&style=';
+
+var xhr = new XMLHttpRequest();
+xhr.open('GET', url);
+xhr.onload = function() {
+    if (xhr.status === 200) {
+        var response = xhr.responseText;
+        // response는 XML 형식의 범례입니다.
+        var legend = JSON.parse(response);
+
+        // 범례를 지도에 표시합니다.
+        var legendControl = new ol.control.Legend({
+            layers: [wmsLayer],
+            legend: legend
+        });
+        map.addControl(legendControl);
+    } else {
+        console.log('Error: ' + xhr.status);
+    }
+};
+xhr.send();
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    new ol.Feature({
+                        geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
+                    })
+                ]
+            })
+        });
+        map.addLayer(layer);
+
+
+var container = document.getElementById('popup');
+ var content = document.getElementById('popup-content');
+ var closer = document.getElementById('popup-closer');
+
+ var overlay = new ol.Overlay({
+     element: container,
+     autoPan: true,
+     autoPanAnimation: {
+         duration: 250
+     }
+ });
+ map.addOverlay(overlay);
+
+ closer.onclick = function() {
+     overlay.setPosition(undefined);
+     closer.blur();
+     return false;
+ };
+
+ map.on('singleclick', function (event) {
+    if (map.hasFeatureAtPixel(event.pixel) === true) {
+        var coordinate = event.coordinate;
+
+        content.innerHTML = '<b>현재 위치입니다!</b>';
+        overlay.setPosition(coordinate);
+    } else {
+        overlay.setPosition(undefined);
+        closer.blur();
+    }
+
+});
+content.innerHTML = '<b>현재 위치입니다!</b>';
+overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
+                    // 지도의 중심을 현재 위치로 이동합니다.
+                    map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+                    map.getView().setZoom(15);
+        
+    });
+
+} else {
+    alert('GeoLocation을 지원하지 않는 브라우저입니다.');
+}
+
+
+</script>
+
 </body>
+
 </html>
