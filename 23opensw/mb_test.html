@@ -1,167 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>범람지도(지방하천)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>하천범람지도(지방하천)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
- <style>
-    .ol-attribution.ol-logo-only,
-    .ol-attribution.ol-uncollapsible {
-        max-width: calc(100% - 3em) !important;
-        height: 1.5em !important;
-    }
-
-    .ol-control button,
-    .ol-attribution,
-    .ol-scale-line-inner {
-        font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
-    }
-
-    .ol-popup {
-        font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
-        font-size: 12px;
-        position: absolute;
-        background-color: white;
-        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #cccccc;
-        bottom: 12px;
-        left: -48px;
-        min-width: 100px;
-    }
-
-    .ol-popup:after,
-    .ol-popup:before {
-        top: 100%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        pointer-events: none;
-    }
-
-    .ol-popup:after {
-        border-top-color: white;
-        border-width: 10px;
-        left: 48px;
-        margin-left: -10px;
-    }
-
-    .ol-popup:before {
-        border-top-color: #cccccc;
-        border-width: 11px;
-        left: 48px;
-        margin-left: -11px;
-    }
-
-    .ol-popup-closer {
-        text-decoration: none;
-        position: absolute;
-        top: 2px;
-        right: 8px;
-    }
-
-    .ol-popup-closer:after {
-        content: "✖";
-        color: #c3c3c3;
-    }
-
-
-  .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 20px;
-    }
-    .hamburger {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        font-size: 24px;
-        cursor: pointer;
-        color: white;
-    }
-    .close-btn {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        font-size: 24px;
-        cursor: pointer;
-        color: white;
-    }
-    .sidebar {
-        display: none;
-        height: 100%;
-        width: 250px;
-        position: fixed;
-        text-align: center;
-        top: 0;
-        left: 0;
-        background-color: #333;
-        color: white;
-        padding-top: 20px;
-        z-index: 1000;
-    }
-    .sidebar.active {
-        display: block;
-        
-    }
-
-    .sidebar ul li a {
-        display: block;
-        padding: 10px 0;
-        color: white;
-        text-decoration: none;
-        text-align: center;
-        
-    }
-    .sidebar ul li a:hover {
-        background-color: #555;
-    }
-    #map {
-        width: 100%;
-        height: calc(100vh - 60px);
-        margin-top: 50px;
-    }
- </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="hamburger" id="hamburger">&#9776;</div>
-        하천범람지도
-    </div>
-    <div id="sidebar" class="sidebar">
-        <div class="close-btn" id="closeBtn">&times;</div>
-        <h2>사이드바</h2>
-        <ul style="list-style-type:none">
-            <li><a href="#">메뉴 1</a></li>
-            <li><a href="#">메뉴 2</a></li>
-            <li><a href="#">메뉴 3</a></li>
-        </ul>
-    </div>
-    <div id="map"></div>
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
-    </div>
+<div id="map" style="width: 100%; height: 700px;"></div>
 <script>
-    
+
     var param = {
         name: '하천범람지도(지방하천)',
         serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
-        layername: 'A2SM_FLOODFOVRRISK2',
-        styles: ''
-    };
-
+            zoom: 12
+        })
+    });
     var wmsLayer = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             url: param.serverUrl,
@@ -189,76 +43,7 @@
             zoom: 12
         })
     });
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
 
-    var overlay = new ol.Overlay({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
-    overlay.setPosition(undefined);
-    closer.blur();
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-
-            var layer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [
-                        new ol.Feature({
-                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
-                        })
-                    ]
-                })
-            });
-            map.addLayer(layer);
-
-            closer.onclick = function() {
-                overlay.setPosition(undefined);
-                closer.blur();
-                return false;
-            };
-
-            map.on('singleclick', function (event) {
-                if (map.hasFeatureAtPixel(event.pixel) === true) {
-                    var coordinate = event.coordinate;
-
-                    content.innerHTML = '<b>현재 위치입니다!</b>';
-                    overlay.setPosition(coordinate);
-                } else {
-                    overlay.setPosition(undefined);
-                    closer.blur();
-                }
-            }); 
-            content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setZoom(15);
-            map.addOverlay(overlay);
-        });
-    } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-        
-
-    }
- 
-    var hamburger = document.getElementById('hamburger');
-    var closeBtn = document.getElementById('closeBtn');
-    var sidebar = document.getElementById('sidebar');
-
-    hamburger.addEventListener('click', function() {
-        sidebar.classList.add('active');
-    });
-
-    closeBtn.addEventListener('click', function() {
-        sidebar.classList.remove('active');
-    });
 </script>
 </body>
 </html>
