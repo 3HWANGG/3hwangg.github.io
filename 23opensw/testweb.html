@@ -154,6 +154,30 @@
     .my-location-btn:hover {
         background-color: #555;
     }
+
+    #photo-overlay {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 200px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        display: none;
+
+    }
+    
+    #photo-overlay img {
+        width: 100%;
+        height: auto;
+    }
+    
+    .photo-close {
+        position: absolute;
+        top: -2px;
+        right: 5px;
+        font-size: 20px;
+        cursor: pointer;
+    }
  </style>
 </head>
 <body>
@@ -176,7 +200,17 @@
         <div id="popup-content"></div>
     </div>
 
+
+    
   <div id="map"></div>
+
+  <div id="photo-overlay">
+    <div id="photo-container">
+        <img id="photo-image" src="하천범례.png" alt="하천범례">
+        <div class="photo-close" id="photoCloseBtn">&times;</div>
+    </div>
+</div>
+
   <div class="my-location-btn" id="myLocationBtn">📍</div>
 
 <script>
@@ -330,6 +364,20 @@ myLocationBtn.addEventListener('click', function() {
     closeBtn.addEventListener('click', function() {
         sidebar.classList.remove('active');
     });
+
+
+    // 범례
+var photoOverlay = document.getElementById('photo-overlay');
+var photoImage = document.getElementById('photo-image');
+var photoCloseBtn = document.getElementById('photoCloseBtn');
+
+photoCloseBtn.addEventListener('click', function() {
+    photoOverlay.style.display = 'none';
+});
+
+photoOverlay.style.display = 'block';
+
+var myLocationBtnContainer = document.getElementById('myLocationBtn');
 
 
 </script>
