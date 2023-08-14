@@ -328,7 +328,6 @@ myLocationBtn.addEventListener('click', function() {
             var newLocation = ol.proj.fromLonLat([lon, lat]);
 
             // 기존 마커를 모두 제거
-            layer.getSource().clear();
             locationLayer.getSource().clear();
 
             // 새로운 위치 마커 추가
