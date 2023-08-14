@@ -317,7 +317,9 @@ myLocationBtn.addEventListener('click', function() {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-    
+
+            locationLayer.getSource().clear(); // 이전 피처들을 제거
+     
             var layer = new ol.layer.Vector({
                 source: new ol.source.Vector({
                     features: [
