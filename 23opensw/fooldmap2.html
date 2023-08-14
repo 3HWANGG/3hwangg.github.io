@@ -311,7 +311,9 @@
         alert('GeoLocation을 지원하지 않는 브라우저입니다.');
     }
 
- // 아이콘 현재 위치로 이동
+// 현재 위치로 이동
+map.addLayer(locationLayer);
+
 var myLocationBtn = document.getElementById('myLocationBtn');
 myLocationBtn.addEventListener('click', function() {
     if (navigator.geolocation) {
@@ -319,39 +321,20 @@ myLocationBtn.addEventListener('click', function() {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
 
-            
-     
-            var layer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [
-                        new ol.Feature({
-                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
-                        })
-                    ]
-                })
+            var newLocation = ol.proj.fromLonLat([lon, lat]);
+
+            // 기존 마커를 모두 제거
+            locationLayer.getSource().clear();
+
+            // 새로운 위치 마커 추가
+            var locationFeature = new ol.Feature({
+                geometry: new ol.geom.Point(newLocation)
             });
-            map.addLayer(layer);
-    
-            closer.onclick = function() {
-                overlay.setPosition(undefined);
-                closer.blur();
-                return false;
-            };
-    
-            map.on('singleclick', function (event) {
-                if (map.hasFeatureAtPixel(event.pixel) === true) {
-                    var coordinate = event.coordinate;
-    
-                    content.innerHTML = '<b>현재 위치입니다!</b>';
-                    overlay.setPosition(coordinate);
-                } else {
-                    overlay.setPosition(undefined);
-                    closer.blur();
-                }
-            }); 
+            locationLayer.getSource().addFeature(locationFeature);
+
             content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+            overlay.setPosition(newLocation);
+            map.getView().setCenter(newLocation);
             map.getView().setZoom(15);
             map.addOverlay(overlay);
         });
