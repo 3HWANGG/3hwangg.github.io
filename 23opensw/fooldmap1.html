@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>하천범람지도(국가하천)</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
   <style>
+
     .ol-attribution.ol-logo-only,
     .ol-attribution.ol-uncollapsible {
       max-width: calc(100% - 3em) !important;
@@ -136,8 +136,12 @@
     }
 
     #map {
-      width: 100%;
-      margin-top: 50px;
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 50px);
+        z-index: -1;
     }
 
 
@@ -185,6 +189,21 @@
       right: 5px;
       font-size: 20px;
       cursor: pointer;
+    }
+
+    
+    @media only screen and (max-width: 600px) {
+      /* Styles for mobile screens */
+      .navbar {
+        font-size: 16px;
+      }
+    }
+
+    @media only screen and (min-width: 601px) {
+      /* Styles for desktop screens */
+      .navbar {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
