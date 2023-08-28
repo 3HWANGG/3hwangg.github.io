@@ -2,7 +2,7 @@
 <html>
 <head>
  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>하천범람지도(지방하천)</title>
+<title>범람지도(지방하천)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
  <style>
@@ -81,7 +81,6 @@
         text-align: center;
         padding: 10px 0;
         font-size: 20px;
-        z-index: 1000;
     }
     .hamburger {
         position: fixed;
@@ -128,136 +127,54 @@
     .sidebar ul li a:hover {
         background-color: #555;
     }
-  
     #map {
-        position: fixed;
-        top: 50px;
-        left: 0;
         width: 100%;
-        height: calc(100% - 50px);
-        z-index: -1;
-    }
-
-    .my-location-btn {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        background-color: #333;
-        color: white;
-        font-size: 24px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 40px;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
-    
-    .my-location-btn:hover {
-        background-color: #555;
-    }
-
-    #photo-overlay {
-        position: absolute;
-        top: 55px;
-        right: 75px;
-        width: 200px;
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        display: none;
-
-    }
-    
-    #photo-overlay img {
-        width: 100%;
-        height: auto;
-        z-index: 1001;
-    }
-    
-    .photo-close {
-        position: absolute;
-        top: -5px;
-        right: -65px;
-        font-size: 20px;
-        cursor: pointer;
-    }
-   @media only screen and (max-width: 600px) {
-      /* Styles for mobile screens */
-      .navbar {
-        font-size: 16px;
-      }
-    }
-
-    @media only screen and (min-width: 601px) {
-      /* Styles for desktop screens */
-      .navbar {
-        font-size: 20px;
-      }
+        height: calc(100vh - 60px);
+        margin-top: 50px;
     }
  </style>
 </head>
 <body>
     <div class="navbar">
         <div class="hamburger" id="hamburger">&#9776;</div>
-        하천범람지도(지방하천)
+        하천범람지도
     </div>
     <div id="sidebar" class="sidebar">
         <div class="close-btn" id="closeBtn">&times;</div>
-        <h2>하천범람지도</h2>
+        <h2>사이드바</h2>
         <ul style="list-style-type:none">
-           <li><a href="./floodmap1.html">국가하천범람지도</a></li>
-           <li><a href="./floodmap2.html">지방하천범람지도</a></li>
-           <li><a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/prevent13.html?menuSeq=126">홍수 시 행동요령</a></li>
+            <li><a href="#">메뉴 1</a></li>
+            <li><a href="#">메뉴 2</a></li>
+            <li><a href="#">메뉴 3</a></li>
         </ul>
-        <br/><br/><br/><br/><br/><br/>
-        <h3 style = "text-align: left;">하천범람지도는<br/>하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h3><br/><br/><br/>
-        <h5>개발자</h5>
-        <p>미래지기</p>
     </div>
-   
+    <div id="map"></div>
     <div id="popup" class="ol-popup">
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
         <div id="popup-content"></div>
     </div>
-
-
-    
-  <div id="map"></div>
-
-  <div id="photo-overlay">
-    <div id="photo-container">
-        <img id="photo-image" src="하천범례mb.png" alt="하천범람지도범례" style="width: auto;">
-        <div class="photo-close" id="photoCloseBtn">&times;</div>
-    </div>
-</div>
-
-  <div class="my-location-btn" id="myLocationBtn">📍</div>
-
 <script>
     
-    var param = {
-        name: '하천범람지도(지방하천)',
-        serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
-        layername: 'A2SM_FLOODFOVRRISK2',
-        styles: ''
-    };
+var param = {
+name: '하천범람지도(지방하천)',
+serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
+layername: 'A2SM_FLOODFOVRRISK2',
+styles: ''
+};
 
-    var wmsLayer = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            url: param.serverUrl,
-            params: {
-                'LAYERS': param.layername,
-                'FORMAT': 'image/png',
-                'TRANSPARENT': true
-            },
-            ratio: 1,
-            serverType: 'geoserver'
-        }),
-        visible: true
-    });
-
+var wmsLayer = new ol.layer.Tile({
+source: new ol.source.XYZ({
+url: param.serverUrl,
+params: {
+'LAYERS': param.layername,
+'FORMAT': 'image/png',
+'TRANSPARENT': true
+},
+ratio: 1,
+serverType: 'geoserver'
+}),
+visible: true
+});
     var map = new ol.Map({
         target: 'map',
         layers: [
@@ -289,7 +206,7 @@
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
-    
+
             var layer = new ol.layer.Vector({
                 source: new ol.source.Vector({
                     features: [
@@ -300,17 +217,17 @@
                 })
             });
             map.addLayer(layer);
-    
+
             closer.onclick = function() {
                 overlay.setPosition(undefined);
                 closer.blur();
                 return false;
             };
-    
+
             map.on('singleclick', function (event) {
                 if (map.hasFeatureAtPixel(event.pixel) === true) {
                     var coordinate = event.coordinate;
-    
+
                     content.innerHTML = '<b>현재 위치입니다!</b>';
                     overlay.setPosition(coordinate);
                 } else {
@@ -326,44 +243,10 @@
         });
     } else {
         alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-    }
+        
 
-// 현재 위치로 이동
-var locationLayer = new ol.layer.Vector({
-      source: new ol.source.Vector()
-  });
+    }
  
-map.addLayer(locationLayer);
-
-var myLocationBtn = document.getElementById('myLocationBtn');
-myLocationBtn.addEventListener('click', function() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-
-            var newLocation = ol.proj.fromLonLat([lon, lat]);
-
-            // 기존 마커를 모두 제거
-            locationLayer.getSource().clear();
-
-            // 새로운 위치 마커 추가
-            var locationFeature = new ol.Feature({
-                geometry: new ol.geom.Point(newLocation)
-            });
-            locationLayer.getSource().addFeature(locationFeature);
-
-            content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(newLocation);
-            map.getView().setCenter(newLocation);
-            map.getView().setZoom(15);
-            map.addOverlay(overlay);
-        });
-    } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-    }
-});
-
     var hamburger = document.getElementById('hamburger');
     var closeBtn = document.getElementById('closeBtn');
     var sidebar = document.getElementById('sidebar');
@@ -375,22 +258,6 @@ myLocationBtn.addEventListener('click', function() {
     closeBtn.addEventListener('click', function() {
         sidebar.classList.remove('active');
     });
-
-
-    // 범례
-var photoOverlay = document.getElementById('photo-overlay');
-var photoImage = document.getElementById('photo-image');
-var photoCloseBtn = document.getElementById('photoCloseBtn');
-
-photoCloseBtn.addEventListener('click', function() {
-    photoOverlay.style.display = 'none';
-});
-
-photoOverlay.style.display = 'block';
-
-var myLocationBtnContainer = document.getElementById('myLocationBtn');
-
-
 </script>
 </body>
 </html>
