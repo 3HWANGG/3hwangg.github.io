@@ -291,6 +291,49 @@
     overlay.setPosition(undefined);
     closer.blur();
 
+  if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+    
+            var layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [
+                        new ol.Feature({
+                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
+                        })
+                    ]
+                })
+            });
+            map.addLayer(layer);
+    
+            closer.onclick = function() {
+                overlay.setPosition(undefined);
+                closer.blur();
+                return false;
+            };
+    
+            map.on('singleclick', function (event) {
+                if (map.hasFeatureAtPixel(event.pixel) === true) {
+                    var coordinate = event.coordinate;
+    
+                    content.innerHTML = '<b>현재 위치입니다!</b>';
+                    overlay.setPosition(coordinate);
+                } else {
+                    overlay.setPosition(undefined);
+                    closer.blur();
+                }
+            }); 
+            content.innerHTML = '<b>현재 위치입니다!</b>';
+            overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
+            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+            map.getView().setZoom(15);
+            map.addOverlay(overlay);
+        });
+    } else {
+        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
+    }
+
 
  // 아이콘 현재 위치로 이동
 var locationLayer = new ol.layer.Vector({
