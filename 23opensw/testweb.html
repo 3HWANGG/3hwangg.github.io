@@ -293,6 +293,10 @@
 
 
  // 아이콘 현재 위치로 이동
+var locationLayer = new ol.layer.Vector({
+      source: new ol.source.Vector()
+  });
+map.addLayer(locationLayer);
 var myLocationBtn = document.getElementById('myLocationBtn');
 myLocationBtn.addEventListener('click', function() {
   if (navigator.geolocation) {
