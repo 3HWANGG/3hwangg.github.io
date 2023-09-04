@@ -1,74 +1,339 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>범람지도지도</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
-</head>
-<body>
-<div id="map" style="width: 100%; height: 700px;"></div>
-<script>
-var param = {
-    name: '하천범람지도(지방하천)',
-    serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
-    layername: 'A2SM_FLOODFOVRRISK2',
-    styles: ''
-};
 
-var wmsLayer = new ol.layer.Image({
-    source: new ol.source.ImageWMS({
-        url: param.serverUrl,
-        params: {
-            'LAYERS': param.layername,
-            'FORMAT': 'image/png',
-            'TRANSPARENT': true
-        },
-        ratio: 1,
-        serverType: 'geoserver'
-    }),
-    visible: true
-});
 
-var map = new ol.Map({
-    target: 'map',
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM()
-        }),
-        wmsLayer
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([126.9784, 37.5665]),
-        zoom: 12
-    })
-});
 
-async function getLocationAndCenterMap() {
-    if (navigator.geolocation) {
-        try {
-            const position = await new Promise(function(resolve, reject) {
-                navigator.geolocation.getCurrentPosition(resolve, reject);
-            });
-
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-
-            // 지도의 중심을 현재 위치로 이동합니다.
-            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setZoom(16);
-
-            // 추가 작업을 여기에 수행할 수 있습니다.
-            // ...
-        } catch (error) {
-            console.error('Error getting location:', error);
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <title>하천범람지도(국가하천)</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
+      <style>
+         
+        .ol-attribution.ol-logo-only,
+        .ol-attribution.ol-uncollapsible {
+          max-width: calc(100% - 3em) !important;
+          height: 1.5em !important;
         }
-    } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-    }
-}
+    
+        .ol-control button,
+        .ol-attribution,
+        .ol-scale-line-inner {
+          font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
+        }
+    
+        .ol-popup {
+          font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
+          font-size: 12px;
+          position: absolute;
+          background-color: white;
+          -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+          filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+          padding: 15px;
+          border-radius: 10px;
+          border: 1px solid #cccccc;
+          bottom: 12px;
+          left: -48px;
+          min-width: 100px;
+        }
+    
+        .ol-popup:after,
+        .ol-popup:before {
+          top: 100%;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+    
+        .ol-popup:after {
+          border-top-color: white;
+          border-width: 10px;
+          left: 48px;
+          margin-left: -10px;
+        }
+    
+        .ol-popup:before {
+          border-top-color: #cccccc;
+          border-width: 11px;
+          left: 48px;
+          margin-left: -11px;
+        }
+    
+        .ol-popup-closer {
+          text-decoration: none;
+          position: absolute;
+          top: 2px;
+          right: 8px;
+        }
+    
+        .ol-popup-closer:after {
+          content: "✖";
+          color: #c3c3c3;
+        }
+    
+    
+        .navbar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          background-color: #333;
+          color: white;
+          text-align: center;
+          padding: 10px 0;
+          font-size: 20px;
+          z-index: 1000;
+        }
+    
+        .hamburger {
+          position: fixed;
+          top: 10px;
+          left: 10px;
+          font-size: 24px;
+          cursor: pointer;
+          color: white;
+        }
+    
+        .close-btn {
+          position: fixed;
+          top: 10px;
+          left: 10px;
+          font-size: 24px;
+          cursor: pointer;
+          color: white;
+        }
+    
+        .sidebar {
+          display: none;
+          height: 100%;
+          width: 250px;
+          position: fixed;
+          text-align: center;
+          top: 0;
+          left: 0;
+          background-color: #333;
+          color: white;
+          padding-top: 20px;
+          z-index: 1000;
+        }
+    
+        .sidebar.active {
+          display: block;
+    
+        }
+    
+        .sidebar ul li a {
+          display: block;
+          padding: 10px 0;
+          color: white;
+          text-decoration: none;
+          text-align: center;
+    
+        }
+    
+        .sidebar ul li a:hover {
+          background-color: #555;
+        }
+    
+        #map {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 50px);
+            z-index: -1;
+        }
+    
+    
+        .my-location-btn {
+          position: absolute;
+          bottom: 20px;
+          right: 20px;
+          width: 40px;
+          height: 40px;
+          background-color: #333;
+          color: white;
+          font-size: 24px;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 40px;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          z-index: 1000;
+        }
+    
+        .my-location-btn:hover {
+          background-color: #555;
+        }
+    
+        #photo-overlay {
+          position: absolute;
+          top: 55px;
+          right: 5px;
+          width: 200px;
+          background-color: white;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          display: none;
+    
+        }
+    
+        #photo-overlay img {
+          width: 100%;
+          height: auto;
+          z-index: 1001;
+        }
+    
+        .photo-close {
+          position: absolute;
+          top: -2px;
+          right: 5px;
+          font-size: 20px;
+          cursor: pointer;
+        }
+    
+        
+        @media only screen and (max-width: 600px) {
+          /* Styles for mobile screens */
+          .navbar {
+            font-size: 16px;
+          }
+        }
+    
+        @media only screen and (min-width: 601px) {
+          /* Styles for desktop screens */
+          .navbar {
+            font-size: 20px;
+          }
+        }
 
-getLocationAndCenterMap();
-</script>
-</body>
-</html>
+        
+      </style>
+    </head>
+    
+    <body>
+      <div class="navbar">
+        <div class="hamburger" id="hamburger">&#9776;</div>
+        하천범람지도(국가하천)
+      </div>
+      <div id="sidebar" class="sidebar">
+        <div class="close-btn" id="closeBtn">&times;</div>
+        <h2>하천범람지도</h2>
+        <ul style="list-style-type:none">
+          <li><a href="./floodmap1.html">국가하천범람지도</a></li>
+          <li><a href="./floodmap2.html">지방하천범람지도</a></li>
+          <li><a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/prevent13.html?menuSeq=126">홍수 시 행동요령</a></li>
+        </ul>
+        <br /><br /><br /><br /><br /><br />
+        <h3 style="text-align: left;">하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h3>
+        <br /><br /><br />
+        <h5>개발자</h5>
+        <p>미래지기</p>
+      </div>
+    
+      <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+      </div>
+    
+    
+    
+      <div id="map"></div>
+    
+      <div id="photo-overlay">
+        <div id="photo-container">
+          <img id="photo-image" src="하천범람지도범례.png" alt="하천범람지도범례">
+          <div class="photo-close" id="photoCloseBtn">&times;</div>
+        </div>
+      </div>
+    
+      <div class="my-location-btn" id="myLocationBtn">📍</div>
+    
+      <script>
+
+
+    
+        var param = {
+          name: '하천범람지도(국가하천)',
+          serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
+          layername: 'A2SM_FLOODFOVRRISK1',
+          styles: ''
+        };
+    
+        var wmsLayer = new ol.layer.Image({
+          source: new ol.source.ImageWMS({
+            url: param.serverUrl,
+            params: {
+              'LAYERS': param.layername,
+              'FORMAT': 'image/png',
+              'TRANSPARENT': true
+            },
+            ratio: 1,
+            serverType: 'geoserver'
+          }),
+          visible: true
+        });
+
+    
+        var map = new ol.Map({
+          target: 'map',
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            }),
+            wmsLayer
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([126.9784, 37.5665]),
+            zoom: 12
+          })
+        });
+
+        import Feature from 'ol/Feature';
+        import Point from 'ol/geom/Point';
+        import {circular} from 'ol/geom/Polygon';
+
+
+        navigator.geolocation.getCurrentPosition(
+        function (pos) {
+            const coords = [pos.coords.longitude, pos.coords.latitude];
+            const accuracy = circular(coords, pos.coords.accuracy);
+            source.clear(true);
+            source.addFeatures([
+            new Feature(
+                accuracy.transform('EPSG:4326', map.getView().getProjection())
+            ),
+            new Feature(new Point(fromLonLat(coords))),
+            ]);
+        },
+        function (error) {
+            alert(`ERROR: ${error.message}`);
+        },
+        {
+            enableHighAccuracy: true,
+        }
+        );
+    
+    
+    
+        // 범례
+        var photoOverlay = document.getElementById('photo-overlay');
+        var photoImage = document.getElementById('photo-image');
+        var photoCloseBtn = document.getElementById('photoCloseBtn');
+    
+        photoCloseBtn.addEventListener('click', function () {
+          photoOverlay.style.display = 'none';
+        });
+    
+        photoOverlay.style.display = 'block';
+    
+        var myLocationBtnContainer = document.getElementById('myLocationBtn');
+    
+        /////
+        
+      </script>
+    </body>
+    
+    </html>
