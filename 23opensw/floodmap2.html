@@ -99,34 +99,35 @@
         cursor: pointer;
         color: white;
     }
-    .sidebar {
-        display: none;
-        height: 100%;
-        width: 250px;
-        position: fixed;
-        text-align: center;
-        top: 0;
-        left: 0;
-        background-color: #333;
-        color: white;
-        padding-top: 20px;
-        z-index: 1000;
+.sidebar {
+      display: none;
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      text-align: center;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      color: white;
+      padding: 20px 0;
+      z-index: 1000;
     }
+
     .sidebar.active {
-        display: block;
-        
+      display: block;
     }
 
     .sidebar ul li a {
-        display: block;
-        padding: 10px 0;
-        color: white;
-        text-decoration: none;
-        text-align: center;
-        
+      display: block;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      text-align: left;
+
     }
+
     .sidebar ul li a:hover {
-        background-color: #555;
+      background-color: #555;     
     }
   
     #map {
@@ -199,23 +200,25 @@
  </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="hamburger" id="hamburger">&#9776;</div>
-        하천범람지도(지방하천)
-    </div>
-    <div id="sidebar" class="sidebar">
-        <div class="close-btn" id="closeBtn">&times;</div>
-        <h2>하천범람지도</h2>
-        <ul style="list-style-type:none">
-           <li><a href="./floodmap1.html">국가하천범람지도</a></li>
-           <li><a href="./floodmap2.html">지방하천범람지도</a></li>
-           <li><a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/prevent13.html?menuSeq=126">홍수 시 행동요령</a></li>
-        </ul>
-        <br/><br/><br/><br/><br/><br/>
-        <h3 style = "text-align: left;">하천범람지도는<br/>하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h3><br/><br/><br/>
-        <h5>개발자</h5>
-        <p>미래지기</p>
-    </div>
+  <div class="navbar">
+    <div class="hamburger" id="hamburger">&#9776;</div>
+    하천범람지도(국가하천)
+  </div>
+  <div id="sidebar" class="sidebar">
+    <div class="close-btn" id="closeBtn">&times;</div>
+    <h2>하천범람지도</h2>
+    <ul style="list-style-type:none">
+      <li><a href="./floodmap1.html">국가하천범람지도</a></li>
+      <li><a href="./floodmap2.html">지방하천범람지도</a></li>
+    </ul>
+    <br /><br /><br /><br /><br /><br /><br /> <br/>
+    <ul style="list-style-type:none">
+        <li style="text-align: left; padding: 0px 20px 0px 0px;"><h4>하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h4></li>
+    </ul>
+    <br />
+    <h5>개발자</h5>
+    <p>미래지기</p>
+  </div>
    
     <div id="popup" class="ol-popup">
         <a href="#" id="popup-closer" class="ol-popup-closer"></a>
