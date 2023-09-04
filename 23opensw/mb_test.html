@@ -291,6 +291,17 @@
           })
         });
 
+        var layer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [
+                        new ol.Feature({
+                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
+                        })
+                    ]
+                })
+            });
+        map.addLayer(layer);
+
         import Feature from 'ol/Feature';
         import Point from 'ol/geom/Point';
         import {circular} from 'ol/geom/Polygon';
