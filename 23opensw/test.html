@@ -1,3 +1,4 @@
+<!--제출한 floodmap1 / PC는 잘 작동되지만, 모바일에서 현재위치 작동 X, 레이어 O-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +71,6 @@
       color: #c3c3c3;
     }
 
-
     .navbar {
       position: fixed;
       top: 0;
@@ -118,7 +118,6 @@
 
     .sidebar.active {
       display: block;
-
     }
 
     .sidebar ul li a {
@@ -127,7 +126,6 @@
       color: white;
       text-decoration: none;
       text-align: center;
-
     }
 
     .sidebar ul li a:hover {
@@ -135,14 +133,13 @@
     }
 
     #map {
-        position: fixed;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        height: calc(100% - 50px);
-        z-index: -1;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 50px);
+      z-index: -1;
     }
-
 
     .my-location-btn {
       position: absolute;
@@ -173,7 +170,6 @@
       background-color: white;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       display: none;
-
     }
 
     #photo-overlay img {
@@ -190,7 +186,6 @@
       cursor: pointer;
     }
 
-    
     @media only screen and (max-width: 600px) {
       /* Styles for mobile screens */
       .navbar {
@@ -207,7 +202,7 @@
  </style>
 </head>
 <body>
- <div class="navbar">
+  <div class="navbar">
     <div class="hamburger" id="hamburger">&#9776;</div>
     하천범람지도(국가하천)
   </div>
@@ -218,11 +213,9 @@
       <li><a href="./floodmap1.html">국가하천범람지도</a></li>
       <li><a href="./floodmap2.html">지방하천범람지도</a></li>
     </ul>
-    <br /><br /><br /><br /><br /><br /><br /> <br/>
-    <ul style="list-style-type:none">
-        <li style="text-align: left; padding: 0 20 0 0;"><h4>하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h4></li>
-    </ul>
-    <br />
+    <br /><br /><br /><br /><br /><br /><br />
+    <h3 style="text-align: left;">하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h3>
+    <br /><br /><br />
     <h5>개발자</h5>
     <p>미래지기</p>
   </div>
@@ -293,58 +286,15 @@
     overlay.setPosition(undefined);
     closer.blur();
 
- if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        var lat = position.coords.latitude;
-        var lon = position.coords.longitude;
-
-        var layer = new ol.layer.Vector({
-          source: new ol.source.Vector({
-            features: [
-              new ol.Feature({
-                geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
-              })
-            ]
-          })
-        });
-        map.addLayer(layer);
-
-        closer.onclick = function () {
-          overlay.setPosition(undefined);
-          closer.blur();
-          return false;
-        };
-
-        map.on('singleclick', function (event) {
-          if (map.hasFeatureAtPixel(event.pixel) === true) {
-            var coordinate = event.coordinate;
-
-            content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(coordinate);
-          } else {
-            overlay.setPosition(undefined);
-            closer.blur();
-          }
-        });
-        content.innerHTML = '<b>현재 위치입니다!</b>';
-        overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
-        map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
-        map.getView().setZoom(15);
-        map.addOverlay(overlay);
-      });
-    } else {
-      alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-    }
-
 
  // 아이콘 현재 위치로 이동
 var locationLayer = new ol.layer.Vector({
       source: new ol.source.Vector()
   });
 map.addLayer(locationLayer);
- 
-var myLocationBtn = document.getElementById('myLocationBtn');
-myLocationBtn.addEventListener('click', function() {
+
+// 현재 위치로 이동하는 함수 정의
+function goToMyLocation() {
   if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude;
@@ -387,7 +337,13 @@ myLocationBtn.addEventListener('click', function() {
     } else {
       alert('GeoLocation을 지원하지 않는 브라우저입니다.');
     }
-}); 
+}
+
+var myLocationBtn = document.getElementById('myLocationBtn');
+myLocationBtn.addEventListener('click', function() {
+  // 클릭 시 내 위치로 이동 함수 호출
+  goToMyLocation();
+});
 
     var hamburger = document.getElementById('hamburger');
     var closeBtn = document.getElementById('closeBtn');
