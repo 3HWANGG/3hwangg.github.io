@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>하천범람지도(국가하천)</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
-  <style>
-
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>하천범람지도(국가하천)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.20.1/ol.js"></script>
+ <style>
     .ol-attribution.ol-logo-only,
     .ol-attribution.ol-uncollapsible {
       max-width: calc(100% - 3em) !important;
@@ -103,7 +102,7 @@
       color: white;
     }
 
-.sidebar {
+    .sidebar {
       display: none;
       height: 100%;
       width: 250px;
@@ -113,25 +112,26 @@
       left: 0;
       background-color: #333;
       color: white;
-      padding: 20px 0;
+      padding-top: 20px;
       z-index: 1000;
     }
 
     .sidebar.active {
       display: block;
+
     }
 
     .sidebar ul li a {
       display: block;
-      padding: 10px;
+      padding: 10px 0;
       color: white;
       text-decoration: none;
-      text-align: left;
+      text-align: center;
 
     }
 
     .sidebar ul li a:hover {
-      background-color: #555;     
+      background-color: #555;
     }
 
     #map {
@@ -204,9 +204,8 @@
         font-size: 20px;
       }
     }
-  </style>
+ </style>
 </head>
-
 <body>
   <div class="navbar">
     <div class="hamburger" id="hamburger">&#9776;</div>
@@ -219,11 +218,9 @@
       <li><a href="./floodmap1.html">국가하천범람지도</a></li>
       <li><a href="./floodmap2.html">지방하천범람지도</a></li>
     </ul>
-    <br /><br /><br /><br /><br /><br /><br /> <br/>
-    <ul style="list-style-type:none">
-        <li style="text-align: left; padding: 0px 20px 0px 0px;"><h4>하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h4></li>
-    </ul>
-    <br />
+    <br /><br /><br /><br /><br /><br /><br />
+    <h3 style="text-align: left;">하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h3>
+    <br /><br /><br />
     <h5>개발자</h5>
     <p>미래지기</p>
   </div>
@@ -232,8 +229,6 @@
     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
     <div id="popup-content"></div>
   </div>
-
-
 
   <div id="map"></div>
 
@@ -246,57 +241,64 @@
 
   <div class="my-location-btn" id="myLocationBtn">📍</div>
 
-  <script>
-
+<script>
+    
     var param = {
-      name: '하천범람지도(국가하천)',
-      serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
-      layername: 'A2SM_FLOODFOVRRISK1',
-      styles: ''
+        name: '하천범람지도(국가하천)',
+        serverUrl: 'https://www.safemap.go.kr/openApiService/wms/getLayerData.do?apikey=EALWNP4P-EALW-EALW-EALW-EALWNP4PP7',
+        layername: 'A2SM_FLOODFOVRRISK1',
+        styles: ''
     };
 
     var wmsLayer = new ol.layer.Image({
-      source: new ol.source.ImageWMS({
-        url: param.serverUrl,
-        params: {
-          'LAYERS': param.layername,
-          'FORMAT': 'image/png',
-          'TRANSPARENT': true
-        },
-        ratio: 1,
-        serverType: 'geoserver'
-      }),
-      visible: true
+        source: new ol.source.ImageWMS({
+            url: param.serverUrl,
+            params: {
+                'LAYERS': param.layername,
+                'FORMAT': 'image/png',
+                'TRANSPARENT': true
+            },
+            ratio: 1,
+            serverType: 'geoserver'
+        }),
+        visible: true
     });
 
     var map = new ol.Map({
-      target: 'map',
-      layers: [
-        new ol.layer.Tile({
-          source: new ol.source.OSM()
-        }),
-        wmsLayer
-      ],
-      view: new ol.View({
-        center: ol.proj.fromLonLat([126.9784, 37.5665]),
-        zoom: 12
-      })
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            }),
+            wmsLayer
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([126.9784, 37.5665]),
+            zoom: 12
+        })
     });
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var closer = document.getElementById('popup-closer');
 
     var overlay = new ol.Overlay({
-      element: container,
-      autoPan: true,
-      autoPanAnimation: {
-        duration: 250
-      }
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
     });
     overlay.setPosition(undefined);
     closer.blur();
 
-    if (navigator.geolocation) {
+ // 아이콘 현재 위치로 이동
+var locationLayer = new ol.layer.Vector({
+      source: new ol.source.Vector()
+  });
+map.addLayer(locationLayer);
+var myLocationBtn = document.getElementById('myLocationBtn');
+myLocationBtn.addEventListener('click', function() {
+  if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
@@ -338,71 +340,35 @@
     } else {
       alert('GeoLocation을 지원하지 않는 브라우저입니다.');
     }
-
-    // 현재 위치로 이동
-    var locationLayer = new ol.layer.Vector({
-      source: new ol.source.Vector()
-    });
-
-    map.addLayer(locationLayer);
-
-    var myLocationBtn = document.getElementById('myLocationBtn');
-    myLocationBtn.addEventListener('click', function () {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var lat = position.coords.latitude;
-          var lon = position.coords.longitude;
-
-          var newLocation = ol.proj.fromLonLat([lon, lat]);
-
-          // 기존 마커를 모두 제거
-          locationLayer.getSource().clear();
-
-          // 새로운 위치 마커 추가
-          var locationFeature = new ol.Feature({
-            geometry: new ol.geom.Point(newLocation)
-          });
-          locationLayer.getSource().addFeature(locationFeature);
-
-          content.innerHTML = '<b>현재 위치입니다!</b>';
-          overlay.setPosition(newLocation);
-          map.getView().setCenter(newLocation);
-          map.getView().setZoom(15);
-          map.addOverlay(overlay);
-        });
-      } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-      }
-    });
+}); 
 
     var hamburger = document.getElementById('hamburger');
     var closeBtn = document.getElementById('closeBtn');
     var sidebar = document.getElementById('sidebar');
 
-    hamburger.addEventListener('click', function () {
-      sidebar.classList.add('active');
+    hamburger.addEventListener('click', function() {
+        sidebar.classList.add('active');
     });
 
-    closeBtn.addEventListener('click', function () {
-      sidebar.classList.remove('active');
+    closeBtn.addEventListener('click', function() {
+        sidebar.classList.remove('active');
     });
 
 
     // 범례
-    var photoOverlay = document.getElementById('photo-overlay');
-    var photoImage = document.getElementById('photo-image');
-    var photoCloseBtn = document.getElementById('photoCloseBtn');
+var photoOverlay = document.getElementById('photo-overlay');
+var photoImage = document.getElementById('photo-image');
+var photoCloseBtn = document.getElementById('photoCloseBtn');
 
-    photoCloseBtn.addEventListener('click', function () {
-      photoOverlay.style.display = 'none';
-    });
+photoCloseBtn.addEventListener('click', function() {
+    photoOverlay.style.display = 'none';
+});
 
-    photoOverlay.style.display = 'block';
+photoOverlay.style.display = 'block';
 
-    var myLocationBtnContainer = document.getElementById('myLocationBtn');
+var myLocationBtnContainer = document.getElementById('myLocationBtn');
 
 
-  </script>
+</script>
 </body>
-
 </html>
