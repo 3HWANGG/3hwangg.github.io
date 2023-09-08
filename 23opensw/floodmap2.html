@@ -8,98 +8,101 @@
  <style>
     .ol-attribution.ol-logo-only,
     .ol-attribution.ol-uncollapsible {
-        max-width: calc(100% - 3em) !important;
-        height: 1.5em !important;
+      max-width: calc(100% - 3em) !important;
+      height: 1.5em !important;
     }
 
     .ol-control button,
     .ol-attribution,
     .ol-scale-line-inner {
-        font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
+      font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
     }
 
     .ol-popup {
-        font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
-        font-size: 12px;
-        position: absolute;
-        background-color: white;
-        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #cccccc;
-        bottom: 12px;
-        left: -48px;
-        min-width: 100px;
+      font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif !important;
+      font-size: 12px;
+      position: absolute;
+      background-color: white;
+      -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+      filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #cccccc;
+      bottom: 12px;
+      left: -48px;
+      min-width: 100px;
     }
 
     .ol-popup:after,
     .ol-popup:before {
-        top: 100%;
-        border: solid transparent;
-        content: " ";
-        height: 0;
-        width: 0;
-        position: absolute;
-        pointer-events: none;
+      top: 100%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
     }
 
     .ol-popup:after {
-        border-top-color: white;
-        border-width: 10px;
-        left: 48px;
-        margin-left: -10px;
+      border-top-color: white;
+      border-width: 10px;
+      left: 48px;
+      margin-left: -10px;
     }
 
     .ol-popup:before {
-        border-top-color: #cccccc;
-        border-width: 11px;
-        left: 48px;
-        margin-left: -11px;
+      border-top-color: #cccccc;
+      border-width: 11px;
+      left: 48px;
+      margin-left: -11px;
     }
 
     .ol-popup-closer {
-        text-decoration: none;
-        position: absolute;
-        top: 2px;
-        right: 8px;
+      text-decoration: none;
+      position: absolute;
+      top: 2px;
+      right: 8px;
     }
 
     .ol-popup-closer:after {
-        content: "✖";
-        color: #c3c3c3;
+      content: "✖";
+      color: #c3c3c3;
     }
 
 
-  .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 20px;
-        z-index: 1000;
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 20px;
+      z-index: 1000;
     }
+
     .hamburger {
-        position: fixed;
-        top: 5px;
-        left: 10px;
-        font-size: 24px;
-        cursor: pointer;
-        color: white;
+      position: fixed;
+      top: 5px;
+      left: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
     }
+
     .close-btn {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        font-size: 24px;
-        cursor: pointer;
-        color: white;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
     }
-.sidebar {
+
+    .sidebar {
       display: none;
       height: 100%;
       width: 250px;
@@ -109,27 +112,28 @@
       left: 0;
       background-color: #333;
       color: white;
-      padding: 20px 0;
+      padding-top: 20px;
       z-index: 1000;
     }
 
     .sidebar.active {
       display: block;
+
     }
 
     .sidebar ul li a {
       display: block;
-      padding: 10px;
+      padding: 10px 0;
       color: white;
       text-decoration: none;
-      text-align: left;
+      text-align: center;
 
     }
 
     .sidebar ul li a:hover {
-      background-color: #555;     
+      background-color: #555;
     }
-  
+
     #map {
         position: fixed;
         top: 50px;
@@ -139,52 +143,55 @@
         z-index: -1;
     }
 
+
     .my-location-btn {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        background-color: #333;
-        color: white;
-        font-size: 24px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 40px;
-        cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: #333;
+      color: white;
+      font-size: 24px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
     }
-    
+
     .my-location-btn:hover {
-        background-color: #555;
+      background-color: #555;
     }
 
     #photo-overlay {
-        position: absolute;
-        top: 60px;
-        right: 10px;
-        width: 200px;
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        display: none;
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      width: 200px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      display: none;
 
     }
-    
+
     #photo-overlay img {
-        width: 100%;
-        height: auto;
-        z-index: 1001;
+      width: 100%;
+      height: auto;
+      z-index: 1001;
     }
-    
+
     .photo-close {
-        position: absolute;
-        top: -2px;
-        right: 5px;
-        font-size: 20px;
-        cursor: pointer;
+      position: absolute;
+      top: -2px;
+      right: 5px;
+      font-size: 20px;
+      cursor: pointer;
     }
-   @media only screen and (max-width: 600px) {
+
+    
+    @media only screen and (max-width: 600px) {
       /* Styles for mobile screens */
       .navbar {
         font-size: 16px;
@@ -202,7 +209,7 @@
 <body>
   <div class="navbar">
     <div class="hamburger" id="hamburger">&#9776;</div>
-    하천범람지도(국가하천)
+    하천범람지도(지방하천)
   </div>
   <div id="sidebar" class="sidebar">
     <div class="close-btn" id="closeBtn">&times;</div>
@@ -211,30 +218,26 @@
       <li><a href="./floodmap1.html">국가하천범람지도</a></li>
       <li><a href="./floodmap2.html">지방하천범람지도</a></li>
     </ul>
-    <br /><br /><br /><br /><br /><br /><br /> <br/>
-    <ul style="list-style-type:none">
-        <li style="text-align: left; padding: 0px 20px 0px 0px;"><h4>하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h4></li>
-    </ul>
-    <br />
+    <br /><br /><br /><br /><br /><br /><br />
+    <h3 style="text-align: left;">하천범람지도는<br />하천이 범람하거나 붕괴되는 상황을 가정하여 하천주변의 예상 침수범위와 침수 깊이를 표출한 지도 입니다.</h3>
+    <br /><br /><br />
     <h5>개발자</h5>
     <p>미래지기</p>
   </div>
-   
-    <div id="popup" class="ol-popup">
-        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-        <div id="popup-content"></div>
-    </div>
 
+  <div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+  </div>
 
-    
   <div id="map"></div>
 
   <div id="photo-overlay">
     <div id="photo-container">
-        <img id="photo-image" src="하천범람지도범례.png" alt="하천범람지도범례">
-        <div class="photo-close" id="photoCloseBtn">&times;</div>
+      <img id="photo-image" src="하천범람지도범례.png" alt="하천범람지도범례">
+      <div class="photo-close" id="photoCloseBtn">&times;</div>
     </div>
-</div>
+  </div>
 
   <div class="my-location-btn" id="myLocationBtn">📍</div>
 
@@ -288,84 +291,56 @@
     overlay.setPosition(undefined);
     closer.blur();
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-    
-            var layer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [
-                        new ol.Feature({
-                            geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
-                        })
-                    ]
-                })
-            });
-            map.addLayer(layer);
-    
-            closer.onclick = function() {
-                overlay.setPosition(undefined);
-                closer.blur();
-                return false;
-            };
-    
-            map.on('singleclick', function (event) {
-                if (map.hasFeatureAtPixel(event.pixel) === true) {
-                    var coordinate = event.coordinate;
-    
-                    content.innerHTML = '<b>현재 위치입니다!</b>';
-                    overlay.setPosition(coordinate);
-                } else {
-                    overlay.setPosition(undefined);
-                    closer.blur();
-                }
-            }); 
-            content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
-            map.getView().setZoom(15);
-            map.addOverlay(overlay);
-        });
-    } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
-    }
-
-// 현재 위치로 이동
+ // 아이콘 현재 위치로 이동
 var locationLayer = new ol.layer.Vector({
       source: new ol.source.Vector()
   });
- 
 map.addLayer(locationLayer);
-
 var myLocationBtn = document.getElementById('myLocationBtn');
 myLocationBtn.addEventListener('click', function() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
+  if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
 
-            var newLocation = ol.proj.fromLonLat([lon, lat]);
+        var layer = new ol.layer.Vector({
+          source: new ol.source.Vector({
+            features: [
+              new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat]))
+              })
+            ]
+          })
+        });
+        map.addLayer(layer);
 
-            // 기존 마커를 모두 제거
-            locationLayer.getSource().clear();
+        closer.onclick = function () {
+          overlay.setPosition(undefined);
+          closer.blur();
+          return false;
+        };
 
-            // 새로운 위치 마커 추가
-            var locationFeature = new ol.Feature({
-                geometry: new ol.geom.Point(newLocation)
-            });
-            locationLayer.getSource().addFeature(locationFeature);
+        map.on('singleclick', function (event) {
+          if (map.hasFeatureAtPixel(event.pixel) === true) {
+            var coordinate = event.coordinate;
 
             content.innerHTML = '<b>현재 위치입니다!</b>';
-            overlay.setPosition(newLocation);
-            map.getView().setCenter(newLocation);
-            map.getView().setZoom(15);
-            map.addOverlay(overlay);
+            overlay.setPosition(coordinate);
+          } else {
+            overlay.setPosition(undefined);
+            closer.blur();
+          }
         });
+        content.innerHTML = '<b>현재 위치입니다!</b>';
+        overlay.setPosition(ol.proj.fromLonLat([lon, lat]));
+        map.getView().setCenter(ol.proj.fromLonLat([lon, lat]));
+        map.getView().setZoom(15);
+        map.addOverlay(overlay);
+      });
     } else {
-        alert('GeoLocation을 지원하지 않는 브라우저입니다.');
+      alert('GeoLocation을 지원하지 않는 브라우저입니다.');
     }
-});
+}); 
 
     var hamburger = document.getElementById('hamburger');
     var closeBtn = document.getElementById('closeBtn');
