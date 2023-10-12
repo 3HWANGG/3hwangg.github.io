@@ -1,10 +1,8 @@
-// 객체) Ex7_9 객체 예제(Midter/Student/Exam)
 package org.javaro.lecture;
 
 public class Ex7_9 {	// Midterm
 
 	public static void main(String[] args) {
-		System.out.println("황은진"+"-"+"20221137"+"-"+"객체"); 
 		Student stud1 =new Student("201901", "홍길동",3); // 생성자 이용 초기화 
 	//	stud1.exam[0].setExamScore("자바",88);
 	//  stud1.exam[1].setExamScore("C",91);
@@ -18,6 +16,7 @@ public class Ex7_9 {	// Midterm
 	    stud1.exam[2].setScore(92);
 	    stud1.printGPA();
 	}
+
 }
 class Student{	// 클래스 선언
 	String studNo, name; 
@@ -35,7 +34,7 @@ class Student{	// 클래스 선언
 	public void setStudNo(String studNo) {
 		this.studNo = studNo;
 	}
-	public void setName() {
+	public void setName(String name) {
 		this.name = name;
 	}
 	public String getName() {
