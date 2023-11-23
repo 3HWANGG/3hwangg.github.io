@@ -6,12 +6,12 @@ public class MyStore {
 	public static void main(String[] args) {
 		//  create a new MyLibrary
 		BookStore myStore = new BookStore("도서관");
-		Book book1 = new Book("홍길동전");
-		Book book2 = new Book("심청전");
+		Book book1 = new Book("9788901161236","홍길동전");
+		Book book2 = new Book("9788901162135","심청전");
 		book1.setAuthor("허균");
 		book2.setAuthor("미상");
-		Student stud1 = new Student();
-		Student stud2 = new Student();
+		Student stud1 = new Student("202X1234");
+		Student stud2 = new Student("202X5678");
 		stud1.setName("이몽룡");
 		stud2.setName("변학도");
 		myStore.addBook(book1);
