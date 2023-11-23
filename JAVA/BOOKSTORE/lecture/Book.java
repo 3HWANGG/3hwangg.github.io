@@ -1,10 +1,12 @@
 package org.javaro.lecture;
 
 public class Book {
+	private String isbn;
 	private String title;
 	private String author;
 	private Student student;
 	public Book(String isbn, String title) {
+		this.isbn = isbn;
 		this.title = title;
 	}
 	public void setTitle(String title) {
