@@ -57,7 +57,7 @@ public class BookStore {
 	public ArrayList<Book> getBooksForStudent(Student student){
 		ArrayList<Book> result = new ArrayList<Book>();
 		for (Book aBook : this.getBooks()) {
-			if((aBook.getStudent() != null) && (aBook.getStudent().getName().equals(student.getName()))) {
+			if((aBook.getStudent() != null) && (aBook.getStudent().getStudNumber().equals(student.getStudNumber()))) {
 				result.add(aBook);
 			}
 		}
@@ -86,7 +86,7 @@ public class BookStore {
 		}
 	
 	public void printStatus() {
-		System.out.println("--- 도서관 ---\n"+ this.toString());
+		System.out.println("--- 도서관 현황 ---\n"+ this.toString());
 		for (Book aBook : this.getBooks()) {
 			System.out.println(aBook);
 			//System.out.println(aBook.toString());
