@@ -11,7 +11,7 @@ public class Book {
 		this.author = "unknown author";
 	}
 	public void setIsbn(String isbn) {
-		this.isbn = isbn;
+		this.isbn  = isbn;
 	}
 	public String getIsbn() {
 		return this.isbn;
@@ -20,14 +20,14 @@ public class Book {
 		this.title = title;
 	}
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 	public void setAuthor(String author) {
 		this.author = author;
 	}
 	public  String getAuthor()
 	{
-		return this.author;
+		return author;
 	}
 	public void setStudent(Student student)
 	{
