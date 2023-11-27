@@ -25,7 +25,7 @@ public class Student {
 	public int  getMaxBooks() {
 		return maxBooks;
 	}
-	public void setMaxBook(int maxBooks) {
+	public void setMaxBooks(int maxBooks) {
 		this.maxBooks = maxBooks;
 	}
 	public String toString() {
