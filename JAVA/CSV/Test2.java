@@ -1,0 +1,42 @@
+package javatest;
+
+import java.io.*;
+
+public class Test2 {
+	public static void main(String[] args) {
+		float[][] indat = new float[10][3];
+		try {
+			File csv = new File("C:\\Users\\3hwan\\OneDrive\\바탕 화면\\1.csv");
+			BufferedReader br = new BufferedReader(new FileReader(csv));
+//			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csv),"utf-8"));
+			String line = null;
+			int row = 0;
+			do {
+				line = br.readLine();	// 한 라인 읽기
+				if(line != null) {
+					String[] token = line.split(",",-1);	// -1 옵션은 마지막 "," 이후 빈 공백도 읽기 위한 옵션
+					for(int i=0; i<3; i++) indat[row][i] = Float.parseFloat(token[i]);
+					//CSV에서 읽어 배열에 옮긴 자료를 화면 확인하기 위한 출력
+					for(int i=0; i<3; i++) System.out.print(indat[row][i]+",");
+					System.out.println("");
+					row++;
+				}
+			}while(line != null);
+			br.close();
+			FileOutputStream out = new FileOutputStream("C:\\Users\\3hwan\\OneDrive\\바탕 화면\\1.csv");
+			for (int i= 0; i<10; i++) {
+				for (int j = 0; j < 3; j++) {
+					out.write(Float.toString(indat[i][j]).getBytes("utf-8"));
+					out.write(",".getBytes("utf-8"));
+				}
+				out.write("\n".getBytes("utf-8"));
+			}
+			out.close();
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}	catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+}
